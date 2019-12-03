@@ -1,0 +1,33 @@
+name: UnusMundus
+attributes:
+  ORGANIZATIONNAME: Christopher Olsen
+options:
+  bundleIdPrefix: com.caolsen
+  deploymentTarget:
+    iOS: "11.0"
+  groupSortPosition: top
+  minimumXcodeGenVersion: 2.7.0
+
+targets:
+  UnusMundus:
+    scheme:
+      testTargets:
+        - UnusMundusTests
+    platform: iOS
+    type: framework
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CURRENT_PROJECT_VERSION: 1
+    sources:
+      - path: UnusMundus
+
+  UnusMundusTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources:
+      - path: UnusMundusTests
+    dependencies:
+      - target: UnusMundus
+      - carthage: Quick
+      - carthage: Nimble
