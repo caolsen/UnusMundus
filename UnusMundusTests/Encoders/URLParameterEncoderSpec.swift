@@ -25,7 +25,7 @@ class URLParameterEncoderSpec: QuickSpec {
                 var request = URLRequest(url: url)
                 let parameters = ["locale": "en_US"]
 
-                try! subject.encode(request: &request, with: parameters)
+                subject.encode(request: &request, with: parameters)
 
                 expect(request.url?.absoluteString).to(equal("https://google.com?locale=en_US"))
             }
@@ -36,7 +36,7 @@ class URLParameterEncoderSpec: QuickSpec {
                 request.url = nil
                 let parameters = ["locale": "en_US"]
                 
-                expect { try subject.encode(request: &request, with: parameters) }.to(throwAssertion())
+                expect { subject.encode(request: &request, with: parameters) }.to(throwAssertion())
             }
         }
     }

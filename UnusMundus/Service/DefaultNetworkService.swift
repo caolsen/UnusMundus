@@ -63,14 +63,10 @@ public class DefaultNetworkService: NetworkService {
         
         addHeaders(request.headers, request: &urlRequest)
         configureBody(request.body, request: &urlRequest)
+        configureParameters(configuration.defaultParameters, request: &urlRequest)
+        configureParameters(request.parameters, request: &urlRequest)
         
-        do {
-            try configureParameters(configuration.defaultParameters, request: &urlRequest)
-            try configureParameters(request.parameters, request: &urlRequest)
-            return urlRequest
-        } catch {
-            throw error
-        }
+        return urlRequest
     }
     
     private func addHeaders(_ headers: HTTPHeaders?, request: inout URLRequest) {
@@ -80,14 +76,9 @@ public class DefaultNetworkService: NetworkService {
         }
     }
     
-    private func configureParameters(_ parameters: Parameters?, request: inout URLRequest) throws {
+    private func configureParameters(_ parameters: Parameters?, request: inout URLRequest) {
         guard let parameters = parameters else { return }
-        
-        do {
-            try URLParameterEncoder().encode(request: &request, with: parameters)
-        } catch {
-            throw error
-        }
+        URLParameterEncoder().encode(request: &request, with: parameters)
     }
     
     private func configureBody(_ body: Data?, request: inout URLRequest) {

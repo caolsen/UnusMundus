@@ -27,4 +27,8 @@ public extension ServiceConfiguration {
     var defaultParameters: Parameters? {
         return nil
     }
+    
+    var defaultHeaders: HTTPHeaders? {
+        return nil
+    }
 }

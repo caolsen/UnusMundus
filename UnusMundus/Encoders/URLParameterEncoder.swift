@@ -10,7 +10,7 @@ import Foundation
 
 class URLParameterEncoder: ParameterEncoder {
     
-    func encode(request: inout URLRequest, with parameters: Parameters) throws {
+    func encode(request: inout URLRequest, with parameters: Parameters) {
         guard let url = request.url else {
             assertionFailure("A URLRequest should always have a URL")
             return
