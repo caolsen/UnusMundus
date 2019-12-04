@@ -32,7 +32,7 @@ public class DefaultNetworkService: NetworkService {
                 
                 do {
                     guard let data = data else { return }
-                    let response: T.Response = try JSONResponseDecoder.decode(data: data)
+                    let response: T.Response = try JSONResponseDecoder().decode(from: data)
                     DispatchQueue.main.async {
                         completion(.success(response))
                     }
@@ -57,8 +57,8 @@ public class DefaultNetworkService: NetworkService {
     
     private func buildRequest<T: NetworkRequest>(from request: T) throws -> URLRequest {
         var urlRequest = URLRequest(url: configuration.baseUrl.appendingPathComponent(request.path),
-                                 cachePolicy: .useProtocolCachePolicy,
-                                 timeoutInterval: 10.0)
+                                    cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
         urlRequest.httpMethod = request.method.rawValue
         
         addHeaders(request.headers, request: &urlRequest)
@@ -84,7 +84,7 @@ public class DefaultNetworkService: NetworkService {
         guard let parameters = parameters else { return }
         
         do {
-            try URLParameterEncoder.encode(request: &request, with: parameters)
+            try URLParameterEncoder().encode(request: &request, with: parameters)
         } catch {
             throw error
         }

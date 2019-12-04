@@ -11,11 +11,11 @@ import Foundation
 /// Decode data into an object of Type T that conforms to Decodable.
 public class JSONResponseDecoder: ResponseDecoder {
     
-    public static func decode<T: Decodable>(data: Data) throws -> T {
+    public func decode<T: Decodable>(from data: Data) throws -> T {
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
-            throw NetworkServiceError.decodingFailed
+            throw error
         }
     }
 }

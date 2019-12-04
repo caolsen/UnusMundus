@@ -15,8 +15,11 @@ public protocol ServiceConfiguration {
     /// Trailing slashes are not necessary.
     var baseUrl: URL { get }
     
-    /// Default parameters included in all requests. This can be used to insert api keys, etc.
+    /// Default parameters to be included in all requests. This can be used to insert api keys, etc.
     var defaultParameters: Parameters? { get }
+    
+    /// Default headers to be included in all requests. This can be used to insert api keys, etc.
+    var defaultHeaders: HTTPHeaders? { get }
 }
 
 // Extension for default values.

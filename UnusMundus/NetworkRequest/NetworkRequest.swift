@@ -19,7 +19,6 @@ public protocol NetworkRequest {
     var headers: HTTPHeaders? { get }
     var parameters: Parameters? { get }
     var body: Data? { get }
-    var isAuthorizedRequest: Bool { get }
 }
 
 // Default implementations for lesser used properties
@@ -34,9 +33,5 @@ public extension NetworkRequest {
     
     var body: Data? {
         return nil
-    }
-    
-    var isAuthorizedRequest: Bool {
-        return false
     }
 }
