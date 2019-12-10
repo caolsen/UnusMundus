@@ -56,9 +56,13 @@ public class DefaultNetworkService: NetworkService {
                                     timeoutInterval: 10.0)
         urlRequest.httpMethod = request.method.rawValue
         
+        // add default values
+        addHeaders(configuration.defaultHeaders, request: &urlRequest)
+        configureParameters(configuration.defaultParameters, request: &urlRequest)
+        
+        // add values from the request
         addHeaders(request.headers, request: &urlRequest)
         configureBody(request.body, request: &urlRequest)
-        configureParameters(configuration.defaultParameters, request: &urlRequest)
         configureParameters(request.parameters, request: &urlRequest)
         
         return urlRequest
