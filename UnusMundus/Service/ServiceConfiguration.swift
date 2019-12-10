@@ -1,6 +1,6 @@
 //
 //  ServiceConfiguration.swift
-//  CoreTests
+//  UnusMundus
 //
 //  Created by Christopher Olsen on 11/18/19.
 //  Copyright © 2019 Christopher Olsen. All rights reserved.
