@@ -13,38 +13,33 @@ public class DefaultNetworkService: NetworkService {
     private var task: URLSessionTask?
     
     private let configuration: ServiceConfiguration
+    private let session: NetworkSession
     
-    public init(configuration: ServiceConfiguration) {
+    public init(configuration: ServiceConfiguration, session: NetworkSession = URLSession.shared) {
         self.configuration = configuration
+        self.session = session
     }
     
     public func request<T: NetworkRequest>(_ request: T, completion: @escaping (Result<T.Response>) -> Void) {
-        let session = URLSession.shared
-        do {
-            let request = try buildRequest(from: request)
-            task = session.dataTask(with: request) { (data, response, error) in
-                guard error == nil else {
-                    DispatchQueue.main.async {
-                        completion(.failure(error!))
-                    }
-                    return
+        let request = buildRequest(from: request)
+        task = session.dataTask(with: request) { (data, _, error) in
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    completion(.failure(error!))
                 }
-                
-                do {
-                    guard let data = data else { return }
-                    let response: T.Response = try JSONResponseDecoder().decode(from: data)
-                    DispatchQueue.main.async {
-                        completion(.success(response))
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(.failure(error))
-                    }
-                }
+                return
             }
-        } catch {
-            DispatchQueue.main.async {
-                completion(.failure(error))
+            
+            do {
+                guard let data = data else { return }
+                let response: T.Response = try JSONResponseDecoder().decode(from: data)
+                DispatchQueue.main.async {
+                    completion(.success(response))
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
         }
         
@@ -55,7 +50,7 @@ public class DefaultNetworkService: NetworkService {
         task?.cancel()
     }
     
-    private func buildRequest<T: NetworkRequest>(from request: T) throws -> URLRequest {
+    private func buildRequest<T: NetworkRequest>(from request: T) -> URLRequest {
         var urlRequest = URLRequest(url: configuration.baseUrl.appendingPathComponent(request.path),
                                     cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
